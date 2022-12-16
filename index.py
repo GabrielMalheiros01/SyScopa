@@ -52,11 +52,20 @@ def existeTecnico():
 
 #associando tecnico na seleção
 def associaTecNaSelec(tec,selec):
-    idtec = cursor.execute("select id_tecnico where nome_tecnico = "+tec)
+    idtec = cursor.execute("select id_tecnico from tecnico where nome_tecnico = "+tec)
     sql = ("UPDATE equipe set tecnico_id = (%s) where nome_equipe = "+selec)
     valores = (idtec)
     cursor.execute(sql,[valores])
     con.commit()
+
+def editarNovotecnico(oldtec,newtec):
+        print(oldtec)
+        print(newtec)
+        sql = ("""Update tecnico set nome_tecnico = %s where nome_tecnico = %s""")
+        valores = (newtec,oldtec)
+        cursor.execute(sql)
+        con.commit()
+
 
 
 #Modulo Principal
@@ -140,7 +149,7 @@ while(True):
             verificatec = verificaTecnico()
             verificaar = verificaarbi()
             verificasel = verificaSelecao()
-            if(verificatec==12 and verificaar==12 and verificasel==32):
+            if(verificatec>=32 and verificaar>=12 and verificasel>=32):
                 print("qual o proximo comando?")
                 print("1- editar: ")
                 print("2- exibir confrontos: ")
@@ -150,20 +159,38 @@ while(True):
                 if(comando==1):
                     while(True):
                         print("como você deseja editar?")
-                        print("1- remover")
-                        print("2- editar")
+                        print("1- editar")
+                        print("2- remover")
                         editar= int(input(""))
 
                         print("quem deseja editar?")
-                        print("tecnico")
-                        print("juiz")
-                        print("selecao")                        
+                        print("1-tecnico")
+                        print("2-juiz")
+                        print("3-selecao")                        
                         deseja = int(input(""))
 
                         if(editar==1):
-                            print
+                            if(deseja==1):
+                                print("Qual o nome atual do tecnico?")
+                                oldtec=input("")
+                                print("Qual o nome novo do tecnico?")
+                                newtec = input("")
+                                editarNovotecnico(oldtec,newtec)
+                            elif(deseja==2):
+                                print()
+                            elif(deseja==3):
+                                print
+                            else:
+                                print("digite um numero valido.")
                         elif(editar==2):
-                            print()
+                            if(deseja==1):
+                                print
+                            elif(deseja==2):
+                                print()
+                            elif(deseja==3):
+                                print
+                            else:
+                                print("digite um numero valido.")
                         else:
                             print("digite um numero valido")
                 else:
