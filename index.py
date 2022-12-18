@@ -295,7 +295,7 @@ def classificacao():
         print((x+1),pri[x],"\n")
 
 def definirPrimeiraRodada():
-    """print("Primeira Rodada da copa dos Devs!")
+    print("Primeira Rodada da copa dos Devs!")
     cursor.execute("select nome_equipe from equipe where id_equipe = 1;")
     time1=cursor.fetchone()
     cursor.execute("select nome_equipe from equipe where id_equipe = 2;")
@@ -583,11 +583,11 @@ def definirPrimeiraRodada():
     print("Digite a quantidades de gols do ",time2)
     gols2 = int(input(""))
     definirPartidaEquipe(31,32,gols1,gols2,16)
-    updateGols(31,32,gols1,gols2)"""
+    updateGols(31,32,gols1,gols2)
     print("a 16º partida foi finalizada.")
 
 def definirSegundaRodada():
-    """print("Segunda Rodada da copa dos Devs!")
+    print("Segunda Rodada da copa dos Devs!")
     cursor.execute("select nome_equipe from equipe where id_equipe = 1;")
     time1=cursor.fetchone()
     cursor.execute("select nome_equipe from equipe where id_equipe = 3;")
@@ -858,11 +858,11 @@ def definirSegundaRodada():
     print("Digite a quantidades de gols do ",time2)
     gols2 = int(input(""))
     definirPartidaEquipe(29,31,gols1,gols2,32)
-    updateGols(29,31,gols1,gols2)"""
+    updateGols(29,31,gols1,gols2)
     print("16º partida foi finalizada.")
 
 def definirTerceiraRodada():
-    """print("Terceira Rodada da copa dos Devs!")
+    print("Terceira Rodada da copa dos Devs!")
     cursor.execute("select nome_equipe from equipe where id_equipe = 4;")
     time1=cursor.fetchone()
     cursor.execute("select nome_equipe from equipe where id_equipe = 1;")
@@ -1133,7 +1133,7 @@ def definirTerceiraRodada():
     print("Digite a quantidades de gols do ",time2)
     gols2 = int(input(""))
     definirPartidaEquipe(30,31,gols1,gols2,48)
-    updateGols(30,31,gols1,gols2)"""
+    updateGols(30,31,gols1,gols2)
     print("16º partida foi finalizada.")
 
 def definirOitavas():
@@ -1314,33 +1314,20 @@ def definirOitavas():
     con.commit()
 
 def eliminatorias(nome1,nome2,gols1,gols2):
-    if(gols1>gols2):
+    if(gols1>=gols2):
         sql = ("UPDATE equipe SET fases = fases + 1 "
         "where nome_equipe = (%s)")
         valores = (nome1)
         cursor.execute(sql,[valores])
         con.commit()
         print(nome1,"Foi Ganhador!")
-    elif(gols2>gols1):
+    else:
         sql = ("UPDATE equipe SET fases = fases + 1 "
         "where nome_equipe = (%s)")
         valores = (nome2)
         cursor.execute(sql,[valores])
         con.commit()
         print(nome2,"Foi Ganhador!")
-    else:
-        sql1 = ("UPDATE equipe SET fases = fases + 1 "
-        "where id_equipe = (%s)")
-        aleatorio = random.randint(1,2)
-        if(aleatorio==1):
-            valores=nome1
-            print(nome1,"Foi Ganhador!")
-        else:
-            valores=nome2
-            print(nome2,"Foi Ganhador!")
-        cursor.execute(sql,[valores])
-        con.commit()
-
 
 def jogarOitavas():
 
@@ -1404,14 +1391,24 @@ def jogarOitavas():
 
 def definirQuartas():
     global v1,v2,v3,v4,v5,v6,v7,v8
-    cursor.execute("SELECT nome_equipe FROM equipe WHERE fases = 3 ")
-    v1 = cursor.fetchall()
-    
-
-    cursor.execute("SELECT nome_equipe FROM equipe WHERE fases = 3 ")
-    v2 = cursor.fetchone()
+    cursor.execute("SELECT nome_equipe FROM equipe WHERE fases = 3")
+    vetor = cursor.fetchall()
+    v1 = vetor[0]
+    v1 = "".join(v1)
+    v2 = vetor[1]
     v2 = "".join(v2)
-
+    v3 = vetor[2]
+    v3 = "".join(v3)
+    v4 = vetor[3]
+    v4 = "".join(v4)
+    v5 = vetor[4]
+    v5 = "".join(v5)
+    v6 = vetor[5]
+    v6 =  "".join(v6)
+    v7 = vetor[6]
+    v7 = "".join(v7)
+    v8 = vetor[7]
+    v8 = "".join(v8)
     
 def jogarQuartas():
     print("Primeiro jogo das Quartas!")
@@ -1430,26 +1427,113 @@ def jogarQuartas():
     eliminatorias(v3,v4,gols1,gols2)
  
     print(v5,"x",v6)
-    print("Quantos gols",v1," fez?")
+    print("Quantos gols",v5," fez?")
     gols1 = int(input(""))
-    print("Quantos gols",v2," fez?")
+    print("Quantos gols",v6," fez?")
     gols2 = int(input(""))
-    eliminatorias(v1,v2,gols1,gols2)
+    eliminatorias(v5,v6,gols1,gols2)
 
     print(v7,"x",v8)
-    print("Quantos gols",v3," fez?")
+    print("Quantos gols",v7," fez?")
     gols1 = int(input(""))
-    print("Quantos gols",v4," fez?")
+    print("Quantos gols",v8," fez?")
     gols2 = int(input(""))
-    eliminatorias(v3,v4,gols1,gols2)
+    eliminatorias(v7,v8,gols1,gols2)
+
+def eliminSemis(nome1,nome2,gols1,gols2):
+        if(gols1>=gols2):
+                sql = ("UPDATE equipe SET fases = fases + 2 "
+                "where nome_equipe = (%s)")
+                valores = (nome1)
+                cursor.execute(sql,[valores])
+                con.commit()
+                print(nome1,"Foi Ganhador!")
+
+                sql = ("UPDATE equipe SET fases = fases + 1 "
+                "where nome_equipe = (%s)")
+                valores = (nome2)
+                cursor.execute(sql,[valores])
+                con.commit()
+
+        elif(gols2>gols1):
+                sql = ("UPDATE equipe SET fases = fases + 2 "
+                "where nome_equipe = (%s)")
+                valores = (nome2)
+                cursor.execute(sql,[valores])
+                con.commit()
+                print(nome2,"Foi Ganhador!")
+
+                sql = ("UPDATE equipe SET fases = fases + 1 "
+                "where nome_equipe = (%s)")
+                valores = (nome1)
+                cursor.execute(sql,[valores])
+                con.commit()
+
+def definirsemis():
+    global z1,z2,z3,z4
+    cursor.execute("SELECT nome_equipe FROM equipe WHERE fases = 4")
+    vetor = cursor.fetchall()
+    z1 = vetor[0]
+    z1 = "".join(z1)
+    z2 = vetor[1]
+    z2 = "".join(z2)
+    z3 = vetor[2]
+    z3 = "".join(z3)
+    z4 = vetor[3]
+    z4 = "".join(z4)
 
 def jogarSemis():
-    print()
+    print("Primeiro jogo das Semis!")
+    print(z1,"x",z2)
+    print("Quantos gols",z1," fez?")
+    gols1 = int(input(""))
+    print("Quantos gols",z2," fez?")
+    gols2 = int(input(""))
+    eliminSemis(z1,z2,gols1,gols2)
+
+    print(z3,"x",z4)
+    print("Quantos gols",z3," fez?")
+    gols1 = int(input(""))
+    print("Quantos gols",z4," fez?")
+    gols2 = int(input(""))
+    eliminSemis(z3,z4,gols1,gols2)
 
 def jogar3lugar():
-    print()
+    cursor.execute("SELECT nome_equipe FROM equipe WHERE fases = 5")
+    vetor = cursor.fetchall()
+    t1 = vetor[0]
+    t1 = "".join(t1)
+    t2 = vetor[1]
+    t2 = "".join(t2)
+
+    print("jogo valendo o 3 lugar!")
+    print(t1,"x",t2)
+    print("Quantos gols",t1," fez?")
+    gols1 = int(input(""))
+    print("Quantos gols",t2," fez?")
+    gols2 = int(input(""))
+    eliminatorias(t1,t2,gols1,gols2)
+
 def jogarFinal():
-    print()
+    cursor.execute("SELECT nome_equipe FROM equipe WHERE fases = 6")
+    vetor = cursor.fetchall()
+    t1 = vetor[0]
+    t1 = "".join(t1)
+    t2 = vetor[1]
+    t2 = "".join(t2)
+
+    print("jogo unico das Semis!")
+    print(t1,"x",t2)
+    print("Quantos gols",t1," fez?")
+    gols1 = int(input(""))
+    print("Quantos gols",t2," fez?")
+    gols2 = int(input(""))
+
+    if(gols1>=gols2):
+        print("Parabens, ",t1,"Voce foi campeã")
+    else:
+        print("Parabens, ",t2,"Voce foi campeã")
+
 
 while(True):
     print("Seja Bem vindo a copa dos devs!")
@@ -1626,6 +1710,7 @@ while(True):
                                             jogarOitavas()
                                             definirQuartas()
                                             jogarQuartas()
+                                            definirsemis()
                                             jogarSemis()
                                             jogar3lugar()
                                             jogarFinal()
