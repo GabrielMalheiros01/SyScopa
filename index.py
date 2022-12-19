@@ -8,6 +8,26 @@ def criar_conexao(host,usuario,senha, banco):
 con = criar_conexao("localhost","root","admin","syscopa")
 cursor = con.cursor()
 
+def criarfases():
+    sql = ("INSERT INTO fases (nome_fase) values (%s)")
+    fsgrupo = "fase_grupo"
+    cursor.execute(sql,[fsgrupo])
+    con.commit()
+    fsoita = "oitava_final"
+    cursor.execute(sql,[fsoita])
+    con.commit()
+    fsquarta = "quarta_final"
+    cursor.execute(sql,[fsquarta])
+    con.commit()
+    fssemi = "semi_final"
+    cursor.execute(sql,[fssemi])
+    con.commit()
+    fsterce = "terceiro_lugar"
+    cursor.execute(sql,[fsterce])
+    con.commit()
+    fsfinal = "final"
+    cursor.execute(sql,[fsfinal])
+    con.commit()
 #criando funções
 def insere_arbitro(nomearbi):
     sql = "INSERT INTO arbitro (nome_arbitro) values (%s)"
@@ -22,7 +42,7 @@ def insere_tecnico(nometecn):
     con.commit()
 
 def insere_selecao(nomeselecao):
-    sql = "INSERT INTO equipe (nome_equipe,gols,pontos,fase_id) values (%s,%s,%s,%s)"
+    sql = "INSERT INTO equipe (nome_equipe,gols,pontos,fases) values (%s,%s,%s,%s)"
     valores = (nomeselecao,0,0,1)
     cursor.execute(sql,valores)
     con.commit()
@@ -98,52 +118,33 @@ def verTodasSelecs():
     for x in range (0,len(resultselec)):
         print(resultselec[x],"\n")
 
-def criarfases():
-    sql = ("INSERT IGNORE INTO fases (nome_fase) values (%s)")
-    fsgrupo = "fase_grupo"
-    cursor.execute(sql,[fsgrupo])
-    con.commit()
-    fsoita = "oitava_final"
-    cursor.execute(sql,[fsoita])
-    con.commit()
-    fsquarta = "quarta_final"
-    cursor.execute(sql,[fsquarta])
-    con.commit()
-    fssemi = "semi_final"
-    cursor.execute(sql,[fssemi])
-    con.commit()
-    fsterce = "terceiro_lugar"
-    cursor.execute(sql,[fsterce])
-    con.commit()
-    fsfinal = "final"
-    cursor.execute(sql,[fsfinal])
-    con.commit()
+
 
 def criarGrupos():
-    sql = ("INSERT IGNORE INTO grupos (nome_grupo,fase_id) values (%s,%s)")
-    valores = ("grupo_A",1)
-    cursor.execute(sql,valores)
+    sql = ("INSERT INTO grupos (nome_grupo) values (%s)")
+    valores = ("grupo_A")
+    cursor.execute(sql,[valores])
     con.commit()
-    valores = ("grupo_B",1)
-    cursor.execute(sql,valores)
+    valores = ("grupo_B")
+    cursor.execute(sql,[valores])
     con.commit()
-    valores = ("grupo_C",1)
-    cursor.execute(sql,valores)
+    valores = ("grupo_C")
+    cursor.execute(sql,[valores])
     con.commit()
-    valores = ("grupo_D",1)
-    cursor.execute(sql,valores)
+    valores = ("grupo_D")
+    cursor.execute(sql,[valores])
     con.commit()
-    valores = ("grupo_E",1)
-    cursor.execute(sql,valores)
+    valores = ("grupo_E")
+    cursor.execute(sql,[valores])
     con.commit()
-    valores = ("grupo_F",1)
-    cursor.execute(sql,valores)
+    valores = ("grupo_F")
+    cursor.execute(sql,[valores])
     con.commit()
-    valores = ("grupo_G",1)
-    cursor.execute(sql,valores)
+    valores = ("grupo_G")
+    cursor.execute(sql,[valores])
     con.commit()
-    valores = ("grupo_H",1)
-    cursor.execute(sql,valores)
+    valores = ("grupo_H")
+    cursor.execute(sql,[valores])
     con.commit()
 
 def definirgrupos():
@@ -1536,6 +1537,7 @@ def jogarFinal():
 
 
 while(True):
+    
     print("Seja Bem vindo a copa dos devs!")
     print("o que desejas?")
     print("1- Cadastrar seleção ")
@@ -1595,10 +1597,11 @@ while(True):
 
     elif(variavel==1):
         while(True):
+            criarfases()
             print("Digite o nome da seleção: ")
             print("Digite 0 para sair")
             seleca = input("")
-
+            criarfases()
             verificasel = verificaSelecao()
 
             if(seleca=="0"):
@@ -1613,8 +1616,9 @@ while(True):
             verificatec = verificaTecnico()
             verificaar = verificaarbi()
             verificasel = verificaSelecao()
+            criarGrupos()
+            definirgrupos()
             if(verificatec>=32 and verificaar>=12 and verificasel>=32):
-                definirgrupos()
                 print("qual o proximo comando?")
                 print("1- editar: ")
                 print("2- exibir participantes: ")
